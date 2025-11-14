@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <!-- Background -->
+  <rect width="600" height="400" fill="#2c3e50"/>
+  
+  <!-- Horizontal road -->
+  <rect x="0" y="150" width="600" height="100" fill="#444"/>
+  
+  <!-- Vertical road -->
+  <rect x="250" y="0" width="100" height="400" fill="#444"/>
+  
+  <!-- Intersection -->
+  <rect x="250" y="150" width="100" height="100" fill="#333"/>
+  
+  <!-- Road markings -->
+  <!-- Horizontal road markings -->
+  <line x1="0" y1="200" x2="600" y2="200" stroke="#fff" stroke-width="2" stroke-dasharray="10, 10"/>
+  
+  <!-- Vertical road markings -->
+  <line x1="300" y1="0" x2="300" y2="400" stroke="#fff" stroke-width="2" stroke-dasharray="10, 10"/>
+  
+  <!-- Traffic lights -->
+  <!-- North traffic light -->
+  <g id="north-light">
+    <rect x="230" y="130" width="20" height="40" rx="5" ry="5" fill="#333" stroke="#222" stroke-width="1"/>
+    <circle cx="240" cy="140" r="5" fill="#ff0000" opacity="1" class="light red"/>
+    <circle cx="240" cy="150" r="5" fill="#ffff00" opacity="0.3" class="light yellow"/>
+    <circle cx="240" cy="160" r="5" fill="#00ff00" opacity="0.3" class="light green"/>
+  </g>
+  
+  <!-- East traffic light -->
+  <g id="east-light">
+    <rect x="370" y="130" width="20" height="40" rx="5" ry="5" fill="#333" stroke="#222" stroke-width="1"/>
+    <circle cx="380" cy="140" r="5" fill="#ff0000" opacity="1" class="light red"/>
+    <circle cx="380" cy="150" r="5" fill="#ffff00" opacity="0.3" class="light yellow"/>
+    <circle cx="380" cy="160" r="5" fill="#00ff00" opacity="0.3" class="light green"/>
+  </g>
+  
+  <!-- South traffic light -->
+  <g id="south-light">
+    <rect x="370" y="270" width="20" height="40" rx="5" ry="5" fill="#333" stroke="#222" stroke-width="1"/>
+    <circle cx="380" cy="280" r="5" fill="#ff0000" opacity="1" class="light red"/>
+    <circle cx="380" cy="290" r="5" fill="#ffff00" opacity="0.3" class="light yellow"/>
+    <circle cx="380" cy="300" r="5" fill="#00ff00" opacity="0.3" class="light green"/>
+  </g>
+  
+  <!-- West traffic light -->
+  <g id="west-light">
+    <rect x="230" y="270" width="20" height="40" rx="5" ry="5" fill="#333" stroke="#222" stroke-width="1"/>
+    <circle cx="240" cy="280" r="5" fill="#ff0000" opacity="1" class="light red"/>
+    <circle cx="240" cy="290" r="5" fill="#ffff00" opacity="0.3" class="light yellow"/>
+    <circle cx="240" cy="300" r="5" fill="#00ff00" opacity="0.3" class="light green"/>
+  </g>
+</svg>

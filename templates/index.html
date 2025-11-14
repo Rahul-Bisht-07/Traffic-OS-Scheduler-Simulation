@@ -1,0 +1,273 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Traffic Intersection Simulation</h5>
+                <div>
+                    <span class="badge bg-primary me-2" id="algorithmBadge">Round Robin</span>
+                    <span class="badge bg-info" id="statusBadge">Ready</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="simulation-container">
+                    <div id="intersectionContainer" class="intersection-container">
+                        <!-- SVG will be inserted here -->
+                    </div>
+                </div>
+                
+                <div class="mt-3 d-flex justify-content-center">
+                    <button id="stepBtn" class="btn btn-primary me-2" disabled>
+                        <i class="fas fa-step-forward me-1"></i> Step
+                    </button>
+                    <button id="autoBtn" class="btn btn-success me-2" disabled>
+                        <i class="fas fa-play me-1"></i> Auto
+                    </button>
+                    <button id="resetBtn" class="btn btn-danger me-2" disabled>
+                        <i class="fas fa-sync-alt me-1"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Lane Status</h5>
+            </div>
+            <div class="card-body">
+                <div id="laneStatus">
+                    <div class="lane-info" data-lane="0">
+                        <h6>North Lane</h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="traffic-light me-2" id="light-0">
+                                <div class="light red active"></div>
+                                <div class="light yellow"></div>
+                                <div class="light green"></div>
+                            </div>
+                            <div>
+                                <div class="mb-1">
+                                    <i class="fas fa-car me-1"></i> Regular: <span id="regular-0">0</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-ambulance me-1"></i> Emergency: <span id="emergency-0">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lane-info" data-lane="1">
+                        <h6>East Lane</h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="traffic-light me-2" id="light-1">
+                                <div class="light red active"></div>
+                                <div class="light yellow"></div>
+                                <div class="light green"></div>
+                            </div>
+                            <div>
+                                <div class="mb-1">
+                                    <i class="fas fa-car me-1"></i> Regular: <span id="regular-1">0</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-ambulance me-1"></i> Emergency: <span id="emergency-1">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lane-info" data-lane="2">
+                        <h6>South Lane</h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="traffic-light me-2" id="light-2">
+                                <div class="light red active"></div>
+                                <div class="light yellow"></div>
+                                <div class="light green"></div>
+                            </div>
+                            <div>
+                                <div class="mb-1">
+                                    <i class="fas fa-car me-1"></i> Regular: <span id="regular-2">0</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-ambulance me-1"></i> Emergency: <span id="emergency-2">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lane-info" data-lane="3">
+                        <h6>West Lane</h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="traffic-light me-2" id="light-3">
+                                <div class="light red active"></div>
+                                <div class="light yellow"></div>
+                                <div class="light green"></div>
+                            </div>
+                            <div>
+                                <div class="mb-1">
+                                    <i class="fas fa-car me-1"></i> Regular: <span id="regular-3">0</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-ambulance me-1"></i> Emergency: <span id="emergency-3">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Set Vehicle Counts</h5>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs mb-3" id="vehicleInputTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="image-tab" data-bs-toggle="tab" data-bs-target="#image-tab-pane" type="button" role="tab" aria-controls="image-tab-pane" aria-selected="true">
+                            <i class="fas fa-camera me-1"></i> Upload Images
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual-tab-pane" type="button" role="tab" aria-controls="manual-tab-pane" aria-selected="false">
+                            <i class="fas fa-keyboard me-1"></i> Manual Input
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="vehicleInputTabContent">
+                    <!-- Image Upload Tab -->
+                    <div class="tab-pane fade show active" id="image-tab-pane" role="tabpanel" aria-labelledby="image-tab" tabindex="0">
+                        <form id="uploadForm">
+                            <div class="mb-3">
+                                <label for="northImage" class="form-label">North Lane</label>
+                                <input type="file" class="form-control" id="northImage" name="north" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="eastImage" class="form-label">East Lane</label>
+                                <input type="file" class="form-control" id="eastImage" name="east" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="southImage" class="form-label">South Lane</label>
+                                <input type="file" class="form-control" id="southImage" name="south" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="westImage" class="form-label">West Lane</label>
+                                <input type="file" class="form-control" id="westImage" name="west" accept="image/*">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary" id="detectBtn">
+                                    <i class="fas fa-search me-1"></i> Detect Vehicles
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Manual Input Tab -->
+                    <div class="tab-pane fade" id="manual-tab-pane" role="tabpanel" aria-labelledby="manual-tab" tabindex="0">
+                        <form id="manualInputForm">
+                            <!-- North Lane -->
+                            <div class="mb-3 border-bottom pb-2">
+                                <label class="form-label fw-bold">North Lane</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                            <input type="number" class="form-control" id="northRegular" name="northRegular" min="0" max="50" value="0" placeholder="Regular">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                            <input type="number" class="form-control" id="northEmergency" name="northEmergency" min="0" max="50" value="0" placeholder="Emergency">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- East Lane -->
+                            <div class="mb-3 border-bottom pb-2">
+                                <label class="form-label fw-bold">East Lane</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                            <input type="number" class="form-control" id="eastRegular" name="eastRegular" min="0" max="50" value="0" placeholder="Regular">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                            <input type="number" class="form-control" id="eastEmergency" name="eastEmergency" min="0" max="50" value="0" placeholder="Emergency">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- South Lane -->
+                            <div class="mb-3 border-bottom pb-2">
+                                <label class="form-label fw-bold">South Lane</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                            <input type="number" class="form-control" id="southRegular" name="southRegular" min="0" max="50" value="0" placeholder="Regular">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                            <input type="number" class="form-control" id="southEmergency" name="southEmergency" min="0" max="50" value="0" placeholder="Emergency">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- West Lane -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">West Lane</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-car"></i></span>
+                                            <input type="number" class="form-control" id="westRegular" name="westRegular" min="0" max="50" value="0" placeholder="Regular">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-ambulance"></i></span>
+                                            <input type="number" class="form-control" id="westEmergency" name="westEmergency" min="0" max="50" value="0" placeholder="Emergency">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary" id="manualBtn">
+                                    <i class="fas fa-play me-1"></i> Apply Vehicle Counts
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Simulation Logs</h5>
+            </div>
+            <div class="card-body">
+                <div id="logContainer" class="log-container">
+                    <p class="log-entry">System initialized and ready.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/simulation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ui_controller.js') }}"></script>
+{% endblock %}
